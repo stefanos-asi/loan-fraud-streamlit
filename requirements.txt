@@ -10,3 +10,5 @@ scikit-learn==1.5.1
 lightgbm==4.3.0
 imbalanced-learn==0.12.3
 scipy==1.14.1
+setuptools>=65.0
+
