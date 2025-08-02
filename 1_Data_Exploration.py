@@ -1,10 +1,6 @@
 import streamlit as st
 import pandas as pd
 import time
-import numba
-if not hasattr(numba, "generated_jit"):
-    numba.generated_jit = numba.jit
-
 from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 import numpy as np
