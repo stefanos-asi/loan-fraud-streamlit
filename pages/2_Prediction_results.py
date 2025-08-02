@@ -1,4 +1,3 @@
-# Rewriting the full code with Isolation Forest instead of XGBoost in the Voting section
 import streamlit as st
 import pandas as pd
 import numpy as np
