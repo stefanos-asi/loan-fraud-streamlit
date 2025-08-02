@@ -1,4 +1,3 @@
-# Rewriting the full code with Isolation Forest instead of XGBoost in the Voting section
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,6 +12,8 @@ from imblearn.combine import SMOTEENN
 from scipy.sparse import csr_matrix
 import plotly.figure_factory as ff
 from sklearn.model_selection import GridSearchCV
+import os
+import joblib
 
 # --- Page Config ---
 st.set_page_config(page_title="Loan Fraud Prediction", layout="wide")
@@ -78,6 +79,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Load Data ---
+
+MODEL_DIR='saved_models'
+os.makedirs(MODEL_DIR,exist_ok=True)
+
+def save_model(model,name):
+    joblib.dump(model,os.path.join(MODEL_DIR,f"{name}.pkl"))
+
+def load_model(name):
+    path=os.path.join(MODEL_DIR,f'{name}.pkl')
+    if os.path.exists(path):
+        return joblib.load(path)
+    return None
+
 if 'df_loans_final' not in st.session_state:
     st.warning("Run preprocessing page first")
     st.stop()
@@ -150,8 +164,8 @@ X_train_sm, X_test, y_train_sm, y_test, preprocessor = get_data()
 
 X_train_data = (X_train_sm.data, X_train_sm.indices, X_train_sm.indptr, X_train_sm.shape)
 
-@st.cache_resource
-def train_model_cached(model_name, X_train_data, y_train):
+
+def train_model(model_name, X_train_data, y_train):
     X_train = csr_matrix((X_train_data[0], X_train_data[1], X_train_data[2]), shape=X_train_data[3])
 
     if model_name == "Logistic Regression":
@@ -196,13 +210,22 @@ def train_model_cached(model_name, X_train_data, y_train):
     else:
         raise ValueError(f"Unknown model_name {model_name}")
 
+def load_or_train(model_name,X_train_data,y_train):
+    model=load_model(model_name)
+    if model is not None:
+        return model
+    model=train_model(model_name,X_train_data,y_train)
+    save_model(model,model_name)
+    return model
+
+
 # Train and store models
 models = {
-    "Logistic Regression": train_model_cached("Logistic Regression", X_train_data, y_train_sm),
+    "Logistic Regression": load_or_train("Logistic Regression", X_train_data, y_train_sm),
 
-    "Random Forest": train_model_cached("Random Forest", X_train_data, y_train_sm),
+    "Random Forest": load_or_train("Random Forest", X_train_data, y_train_sm),
 
-    "LightGBM": train_model_cached("LightGBM", X_train_data, y_train_sm)
+    "LightGBM": load_or_train("LightGBM", X_train_data, y_train_sm)
 }
 
 st.session_state.models = models
