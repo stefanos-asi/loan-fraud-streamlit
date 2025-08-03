@@ -128,6 +128,10 @@ def create_transaction_features(df_loans, df_transactions):
     df_loans = pd.merge(df_loans, features_df, how='left', on='application_id')
     return df_loans
 
+#Cache pandas profile report and creating the function to call it
+st.cache_resource(show_spinner="Generating profiling report..")
+def generate_profile_report(df,title):
+    return ProfileReport(df,title=title,explorative=True)
 
 # Session state
 if 'started' not in st.session_state:
@@ -167,7 +171,7 @@ if st.session_state.started:
         with st.expander("📂 Profiling Report"):
 
             if st.button("▶️ Generate the Loan Report"):
-                profile_loans = ProfileReport(df_loans, title="Loan Applications Profiling Report", explorative=True)
+                profile_loans = generate_profile_report(df_loans,"Loan Applications Profiling Report")
                 st.session_state.profile_loans = profile_loans
                 st.session_state.show_loan_report = True
             if st.session_state.show_loan_report:
@@ -177,7 +181,7 @@ if st.session_state.started:
         st.markdown("**Transactions table information**")
         with st.expander("📂 Profiling Report"):
             if st.button("▶️ Generate the Transaction Report"):
-                profile_trans = ProfileReport(df_transactions, title="Transactions Profiling Report", explorative=True)
+                profile_trans = generate_profile_report(df_transactions,"Transactions Profiling Report")
                 st.session_state.profile_trans = profile_trans
                 st.session_state.show_transaction_report = True
             if st.session_state.show_transaction_report:
