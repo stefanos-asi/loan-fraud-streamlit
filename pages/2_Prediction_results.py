@@ -140,6 +140,10 @@ def get_data():
 
     iso.fit(X_train_dense)
 
+    iso_path=os.path.join(MODEL_DIR,"isolation_forest.pkl")
+
+    joblib.dump(iso,iso_path)
+
     train_scores = iso.decision_function(X_train_dense).reshape(-1, 1)
 
     test_scores = iso.decision_function(X_test_dense).reshape(-1, 1)

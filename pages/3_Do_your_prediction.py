@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os,joblib
 
 # --- Page Config ---
 st.set_page_config(page_title="Single Loan Prediction", layout="wide")
@@ -21,6 +22,15 @@ st.markdown("""
 st.markdown("<h3 style='text-align: center;'>Predict if a loan is fraud</h3>", unsafe_allow_html=True)
 
 # --- Validation ---
+
+if "isolation_forest" not in st.session_state:
+    iso_path=os.path.join("saved_models","isolation_forest.pkl")
+    if os.path.exists(iso_path):
+        st.session_state.isolation_forest=joblib.load(iso_path)
+    else:
+        st.warning("Plase run Page 2 first to get the necessary models")
+        st.stop()
+        
 if 'df_loans_final' not in st.session_state or 'models' not in st.session_state or 'preprocessor' not in st.session_state:
     st.warning("Please run Page 2 first to train the models.")
     st.stop()
