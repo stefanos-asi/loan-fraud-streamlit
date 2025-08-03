@@ -129,7 +129,7 @@ def create_transaction_features(df_loans, df_transactions):
     return df_loans
 
 #Cache pandas profile report and creating the function to call it
-st.cache_resource(show_spinner="Generating profiling report..")
+@st.cache_resource(show_spinner="Generating profiling report..")
 def generate_profile_report(df,title):
     return ProfileReport(df,title=title,explorative=True)
 
