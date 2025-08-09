@@ -67,10 +67,12 @@ st.markdown("""
         border-collapse: collapse;
         width: 100%;
         text-align: center;
+        table-layout: auto;
     }
     .custom-table th, .custom-table td {
         padding: 8px;
         border: 1px solid #ccc;
+        white-space: nowrap;
     }
     .custom-table thead {
         background-color: #f2f2f2;
@@ -281,12 +283,15 @@ def render_model_section(title, model_name, fig_key):
     report_df = pd.DataFrame(report).T.round(2)
     report_df.rename(index={"0": "Not Fraud", "1": "Fraud"}, inplace=True)
     table_html = report_df.to_html(classes="custom-table", border=0)
+
+    
     styled_html = f"""
-    <div class="metric-container" style="height:auto; padding: 10px;">
+    <div class="metric-container" style="height:auto; padding: 10px; overflow-x: auto; max-width: 100%;">
         <div class="metric-label" style="color:#bbb; font-size:14px;font-weight:bold">Classification Report</div>
-        {table_html}
+        <div style="min-width: 400px;">{table_html}</div>
     </div>
     """
+
     st.markdown(styled_html, unsafe_allow_html=True)
 
     st.markdown("---")
