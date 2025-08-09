@@ -9,6 +9,22 @@ import seaborn as sns
 import plotly.express as px
 from datetime import timedelta
 
+# Page configuration
+st.set_page_config(page_title="Data Exploration", page_icon="📈", layout="wide")
+
+# Custom sidebar color
+st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] {
+        background-color: #2f2f2f;
+        color: white;
+    }
+    section[data-testid="stSidebar"] * {
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 resolution_script = """
 <script>
     const width = window.innerWidth;
@@ -26,22 +42,6 @@ params = st.experimental_get_query_params()
 if "small_screen" in params:
     st.error("⚠️ Please use a screen with at least 1920x1080 resolution & refresh the app")
     st.stop()
-
-# Page configuration
-st.set_page_config(page_title="Data Exploration", page_icon="📈", layout="wide")
-
-# Custom sidebar color
-st.markdown("""
-    <style>
-    section[data-testid="stSidebar"] {
-        background-color: #2f2f2f;
-        color: white;
-    }
-    section[data-testid="stSidebar"] * {
-        color: white;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # Title
 st.markdown("<h3 style='text-align: center;'>🔍 Data Exploration & Preprocessing of a Loan Dataset</h3>", unsafe_allow_html=True)
