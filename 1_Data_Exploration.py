@@ -9,6 +9,24 @@ import seaborn as sns
 import plotly.express as px
 from datetime import timedelta
 
+resolution_script = """
+<script>
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    if (width < 1920 || height < 1080) {
+        window.location.href = "?small_screen=true";
+    }
+</script>
+"""
+st.markdown(resolution_script, unsafe_allow_html=True)
+
+# Check query params
+params = st.experimental_get_query_params()
+
+if "small_screen" in params:
+    st.error("⚠️ Please use a screen with at least 1920x1080 resolution & refresh the app")
+    st.stop()
+
 # Page configuration
 st.set_page_config(page_title="Data Exploration", page_icon="📈", layout="wide")
 
