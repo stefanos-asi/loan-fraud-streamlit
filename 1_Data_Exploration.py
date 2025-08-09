@@ -25,26 +25,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-resolution_check_script = """
-<script>
-(function() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    if (width < 1920 || height < 1080) {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set("small_screen", "true");
-        window.location.replace(currentUrl.toString());
-    }
-})();
-</script>
-"""
-st.markdown(resolution_check_script, unsafe_allow_html=True)
-
-params = st.experimental_get_query_params()
-if "small_screen" in params:
-    st.error("⚠️ Please use a screen with at least 1920x1080 resolution & refresh the app.")
-    st.stop()
-
 # Title
 st.markdown("<h3 style='text-align: center;'>🔍 Data Exploration & Preprocessing of a Loan Dataset</h3>", unsafe_allow_html=True)
 
