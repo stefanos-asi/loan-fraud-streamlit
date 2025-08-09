@@ -10,7 +10,7 @@ import plotly.express as px
 from datetime import timedelta
 
 # Page configuration
-st.set_page_config(page_title="Data Exploration", page_icon="📈", layout="wide", page_navigation="horizontal")
+st.set_page_config(page_title="Data Exploration", page_icon="📈", layout="wide", navigation="horizontal")
 
 # Custom sidebar color
 st.markdown("""
